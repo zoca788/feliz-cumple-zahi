@@ -22,11 +22,32 @@ h1{font-size:clamp(31px,8vw,40px);font-weight:400;line-height:1.12;margin:0}h1 s
 .background-music{position:fixed;right:16px;bottom:16px;z-index:2;font:16px "Times New Roman",Times,serif;color:var(--ink);background:#fff8f8;border:1px solid #bb7892;border-radius:24px;padding:11px 16px;min-height:44px;cursor:pointer;box-shadow:0 3px 14px #6b294418}
 .background-music:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 main{padding-bottom:78px}
+.letter-cover{position:fixed;inset:0;z-index:10;background:var(--pink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;padding:24px}
+.letter-cover[hidden]{display:none}
+.envelope{width:min(250px,72vw);height:auto;filter:drop-shadow(0 12px 15px #6b294418)}
+.open-letter{font:20px "Times New Roman",Times,serif;color:var(--ink);background:#fff8f8;border:1px solid #bb7892;border-radius:30px;padding:14px 28px;min-height:50px;cursor:pointer}
+.open-letter:focus-visible{outline:2px solid var(--ink);outline-offset:5px}
+body.letter-closed{overflow:hidden}
+body.letter-closed main{visibility:hidden}
+.letter-open .card{animation:reveal-letter .55s ease-out}
+@keyframes reveal-letter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.letter-open .card{animation:none}}
 </style>
+<noscript><style>.letter-cover{display:none}</style></noscript>
 </head>
 <body>
-<audio id="background-song" src="./song.mp3" autoplay loop playsinline preload="auto"></audio>
-<button id="music-toggle" class="background-music" type="button" aria-controls="background-song" aria-pressed="false">Activar música</button>
+<section id="letter-cover" class="letter-cover" role="dialog" aria-modal="true" aria-label="Una carta para ti">
+<svg class="envelope" viewBox="0 0 280 200" aria-hidden="true">
+<rect x="10" y="30" width="260" height="160" rx="6" fill="#fff8f8" stroke="#b9708d" stroke-width="1.5"/>
+<path d="M11 186L112 104Q140 84 168 104L269 186" fill="#f6dce5" stroke="#b9708d" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M12 32L126 120Q140 132 154 120L268 32" fill="#f0c3d3" stroke="#b9708d" stroke-width="1.5" stroke-linejoin="round"/>
+<circle cx="140" cy="119" r="17" fill="#b76b89"/>
+<path d="M140 127C135 123 130 120 130 116C130 110 137 109 140 114C143 109 150 110 150 116C150 120 145 123 140 127Z" fill="#ffeaf1"/>
+</svg>
+<button id="open-letter" class="open-letter" type="button">Abrir tu carta</button>
+</section>
+<audio id="background-song" src="./song.mp4" loop playsinline preload="auto"></audio>
+<button id="music-toggle" class="background-music" type="button" aria-controls="background-song" aria-pressed="false" hidden>Activar música</button>
 <main>
 <article class="card" aria-label="Carta de cumpleaños para Zahi">
 <p class="eyebrow">Hoy es tu día</p>
@@ -74,6 +95,11 @@ main{padding-bottom:78px}
 <script>
 const song = document.getElementById('background-song');
 const toggle = document.getElementById('music-toggle');
+const cover = document.getElementById('letter-cover');
+const letter = document.querySelector('main');
+let letterOpened = false;
+document.body.classList.add('letter-closed');
+letter.inert = true;
 song.volume = 0.6;
 function updateMusicButton() {
   const playing = !song.paused && !song.ended;
@@ -87,6 +113,20 @@ async function startMusic() {
     updateMusicButton();
   }
 }
+document.getElementById('open-letter').addEventListener('click', () => {
+  if (letterOpened) return;
+  letterOpened = true;
+  // Call play directly during the tap so mobile browsers can allow sound.
+  if (song.error) song.load();
+  startMusic();
+  cover.hidden = true;
+  document.body.classList.replace('letter-closed', 'letter-open');
+  letter.inert = false;
+  toggle.hidden = !!song.error;
+  const heading = letter.querySelector('h1');
+  heading.tabIndex = -1;
+  heading.focus({preventScroll:true});
+});
 toggle.addEventListener('click', () => {
   if (song.paused) {
     if (song.error) song.load();
@@ -100,8 +140,7 @@ song.addEventListener('pause', updateMusicButton);
 song.addEventListener('error', () => {
   toggle.hidden = true;
 });
-song.addEventListener('canplay', () => { toggle.hidden = false; });
-startMusic();
+song.addEventListener('canplay', () => { toggle.hidden = !letterOpened; });
 </script>
 </body>
 </html>
