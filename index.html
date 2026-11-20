@@ -46,7 +46,10 @@ body.letter-closed main{visibility:hidden}
 </svg>
 <button id="open-letter" class="open-letter" type="button">Abrir tu carta</button>
 </section>
-<audio id="background-song" src="./song.mp4" loop playsinline preload="auto"></audio>
+<audio id="background-song" loop playsinline preload="auto">
+<source src="./song.mp3" type="audio/mpeg">
+<source src="./song.mp4" type="audio/mp4">
+</audio>
 <button id="music-toggle" class="background-music" type="button" aria-controls="background-song" aria-pressed="false" hidden>Activar música</button>
 <main>
 <article class="card" aria-label="Carta de cumpleaños para Zahi">
