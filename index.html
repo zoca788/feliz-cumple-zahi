@@ -18,11 +18,20 @@ h1{font-size:clamp(31px,8vw,40px);font-weight:400;line-height:1.12;margin:0}h1 s
 .music{width:100%;padding:23px 0 0;text-align:center}.music p{font-size:16px;font-style:italic;margin:0 0 13px}.artists{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.artists a{color:var(--ink);text-decoration:none;border:1px solid #bb7892;border-radius:30px;padding:11px 14px;font-size:15px;background:#f9e5ec;transition:background .2s,transform .2s}.artists a:hover{background:#fff8f8;transform:translateY(-2px)}a:focus-visible{outline:2px solid #6b2944;outline-offset:4px}
 .flower{transform-box:fill-box;transform-origin:50% 100%;animation:sway 6s ease-in-out infinite alternate}.flower.second{animation-delay:-2s}.flower.third{animation-delay:-4s}@keyframes sway{from{transform:rotate(-1.5deg)}to{transform:rotate(1.5deg)}}@media(prefers-reduced-motion:reduce){.flower{animation:none}.artists a{transition:none}}@media(max-width:350px){main{padding:16px}.card{padding-inline:17px}.artists{gap:6px}.artists a{padding:10px 11px}}
 </style>
+<style>
+.song-bar{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 2px 16px;font-size:16px}
+.song-bar button{font:inherit;color:var(--ink);background:#fff8f8;border:1px solid #bb7892;border-radius:24px;padding:10px 16px;cursor:pointer;min-height:44px}
+.song-bar button:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.song-player{width:100%;margin:22px 0 0}.song-player iframe{display:block;width:100%;height:210px;border:1px solid #bb7892;border-radius:4px}
+.song-fallback{display:block;color:var(--ink);font-size:15px;margin-top:10px}
+.song-status{font-size:15px;line-height:1.4;margin:10px 0 0}
+</style>
 </head>
 <body>
 <main>
+<div class="song-bar"><span>50mm · Humbe</span><button id="music-toggle" type="button" aria-controls="birthday-song" aria-pressed="false">Activar música</button></div>
 <article class="card" aria-label="Carta de cumpleaños para Zahi">
-<p class="eyebrow">Happy birthdayyy to youuuu</p>
+<p class="eyebrow">Hoy es tu día</p>
 <h1>Feliz cumpleaños,<span>Zahi</span></h1>
 <svg class="bouquet" viewBox="0 0 280 270" role="img" aria-labelledby="flowers-title">
 <title id="flowers-title">Un pequeño ramo de flores rosas para ti</title>
@@ -52,17 +61,69 @@ h1{font-size:clamp(31px,8vw,40px);font-weight:400;line-height:1.12;margin:0}h1 s
 <use href="#daisy" transform="translate(201 167) rotate(15) scale(.6)"/>
 <g fill="none" stroke="#ae6281" stroke-width="1.5"><path d="M139 223C111 204 99 229 139 228C175 202 186 232 143 228M140 228Q126 240 116 247M143 228Q158 243 163 250"/></g>
 </svg>
-<p class="message">Que tengas un día muy bonito, lleno de amor y momentos felices. Te deseo lo mejor hoy y siempre pequeña</p>
-<p class="closing">Con mucho cariño de Dylan, para ti.</p>
+<p class="message">Que tengas un día muy bonito, lleno de amor y momentos felices. Te deseo lo mejor hoy y siempre.</p>
+<p class="closing">Con mucho cariño, para ti.</p>
 </article>
 <footer class="music">
-<p>De lo que te gusta, picale en los nombres de los artistas.</p>
+<p>Y que hoy suene lo que más te gusta.</p>
 <nav class="artists" aria-label="Escucha a tus artistas favoritos en Spotify">
-<a href="https://open.spotify.com/track/4xadguhD6ztFKReVXwLTEt?si=0ESeMrOERBexLXkSv7Z0jg&utm_source=copy-link" target="_blank" rel="noopener noreferrer" aria-label="Escuchar Humbe en Spotify (abre otra pestaña)">Humbe</a>
-<a href="https://open.spotify.com/track/1dyA1Re4QEQQWGDDT7h9TK?si=vdhrAH4nRdGcaguhBcqUUw&utm_source=copy-link" target="_blank" rel="noopener noreferrer" aria-label="Escuchar Latin Mafia en Spotify (abre otra pestaña)">Latin Mafia</a>
-<a href="https://open.spotify.com/track/3hpm0fTeSqlhJbnqAgaLZs?si=Twt5BHV2QtGPKrBzBedltw&utm_source=copy-link" target="_blank" rel="noopener noreferrer" aria-label="Escuchar Fuerza Regida en Spotify (abre otra pestaña)">Fuerza Regida</a>
+<a href="https://open.spotify.com/search/Humbe" target="_blank" rel="noopener noreferrer" aria-label="Escuchar Humbe en Spotify (abre otra pestaña)">Humbe</a>
+<a href="https://open.spotify.com/search/Latin%20Mafia" target="_blank" rel="noopener noreferrer" aria-label="Escuchar Latin Mafia en Spotify (abre otra pestaña)">Latin Mafia</a>
+<a href="https://open.spotify.com/search/Fuerza%20Regida" target="_blank" rel="noopener noreferrer" aria-label="Escuchar Fuerza Regida en Spotify (abre otra pestaña)">Fuerza Regida</a>
 </nav>
+<div class="song-player">
+<iframe id="birthday-song" title="50mm de Humbe en YouTube" width="400" height="210" src="https://www.youtube.com/embed/PxFOL2dq-GI?enablejsapi=1&amp;autoplay=1&amp;playsinline=1&amp;loop=1&amp;playlist=PxFOL2dq-GI&amp;origin=https%3A%2F%2Fzoca788.github.io&amp;rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+<p id="music-status" class="song-status" role="status">Si no suena, toca Activar música.</p>
+<a class="song-fallback" href="https://www.youtube.com/watch?v=PxFOL2dq-GI" target="_blank" rel="noopener noreferrer">Escuchar en YouTube</a>
+</div>
 </footer>
 </main>
+<script>
+let songPlayer, songReady = false, wantsMusic = true;
+const musicButton = document.getElementById('music-toggle');
+const musicStatus = document.getElementById('music-status');
+musicButton.addEventListener('click', () => {
+  if (!songReady) {
+    wantsMusic = true;
+    musicStatus.textContent = 'Cargando la canción. También puedes usar el reproductor.';
+    return;
+  }
+  if (songPlayer.getPlayerState() === 1) {
+    wantsMusic = false;
+    songPlayer.pauseVideo();
+  } else {
+    wantsMusic = true;
+    songPlayer.unMute();
+    songPlayer.setVolume(60);
+    songPlayer.playVideo();
+  }
+});
+window.onYouTubeIframeAPIReady = function () {
+  songPlayer = new YT.Player('birthday-song', {
+    events: {
+      onReady(event) {
+        songReady = true;
+        event.target.setVolume(60);
+        if (wantsMusic) event.target.playVideo();
+      },
+      onStateChange(event) {
+        const playing = event.data === YT.PlayerState.PLAYING;
+        musicButton.textContent = playing ? 'Pausar música' : 'Activar música';
+        musicButton.setAttribute('aria-pressed', String(playing));
+        if (playing) musicStatus.textContent = '50mm · Humbe';
+        else if (event.data === YT.PlayerState.PAUSED) musicStatus.textContent = 'Música en pausa.';
+      },
+      onAutoplayBlocked() {
+        musicStatus.textContent = 'Toca Activar música para escuchar la canción.';
+      },
+      onError() {
+        musicStatus.textContent = 'No se pudo reproducir aquí. Puedes escucharla en YouTube.';
+        musicButton.hidden = true;
+      }
+    }
+  });
+};
+</script>
+<script src="https://www.youtube.com/iframe_api" async onerror="document.getElementById('music-status').textContent='Usa el reproductor o escucha la canción en YouTube.'"></script>
 </body>
 </html>
